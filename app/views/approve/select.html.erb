@@ -1,0 +1,22 @@
+<div id="contents_wrapper">
+    <%= content_tag(:header, image_tag("logo.png"), :class => 'clear_child') %>
+
+    <div id="contents_body">
+      <%= form_for(@orderLog, :url => {:controller => :approve, :action => :update}) do |f| %>
+        <%= content_tag(:h1, @sheetList[@orderLog.record_type]['title'] + ' 承諾画面') %>
+        <%= content_tag(:p, @sheetList[@orderLog.record_type]['text'] + '番号 : ' + @orderLog.record_id, :class => 'numbers') %>
+        <%= hidden_field :order_log, :id, :value => @orderLog.id%>
+        <div id="button_wrapper">
+          <%= f.submit "承認", :name => 'accept' %>
+          <%= f.submit "拒否", :name => 'reject' %>
+        </div>
+      <% end %>
+
+      <%= content_tag(:dl,
+        content_tag(:dt, '※免責事項', :class => 'clear_child') +
+        content_tag(:dd, '国内金融機関初の1兆円超えである。2015年3月期、三菱UFJフィナンシャル・グループの連結純利益は1兆0337億円に達した。残る2メガバンクの連結純利益は三井住友フィナンシャルグループが7536億円、みずほフィナンシャルグループが6119億円。2位に2800億円以上の大差をつけたことになる。しかも2メガは1割前後の減益(三井住友が9.8％減、みずほが11.1％減)であり、三菱UFJの5.0％増益は光る。(東洋経済オンライン)', :class => 'clear_child'),
+      :class => 'disclaimers') %>
+    </div>
+
+    <%= content_tag(:footer, 'copyright © ULURU.CO.,LTD. All rights reserved.') %>
+</div>

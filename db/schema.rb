@@ -14,13 +14,14 @@
 ActiveRecord::Schema.define(version: 20150519054523) do
 
   create_table "order_logs", force: :cascade do |t|
-    t.string   "order_id",   limit: 255,                 null: false
-    t.boolean  "approved",   limit: 1,   default: false, null: false
-    t.string   "type",       limit: 255,                 null: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.string   "record_id",   limit: 255, null: false
+    t.string   "record_type", limit: 255, null: false
+    t.string   "tranid",      limit: 255, null: false
+    t.string   "approved",    limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
-  add_index "order_logs", ["order_id"], name: "index_order_logs_on_order_id", using: :btree
+  add_index "order_logs", ["record_id"], name: "index_order_logs_on_record_id", using: :btree
 
 end

@@ -1,16 +1,18 @@
 Rails.application.routes.draw do
-  get 'approve/index'
-  get 'approve/update'
+  get ':approve/:select/:hash' => 'approve#select'
+  get ':approve/:register/:record_id/:record_type/:tranid' => 'approve#register'
+  get 'approve/error' => 'approve#error'
+  post 'approve/update'
+  patch 'approve/update' => 'approve#update'  
 # Todo ↓ の指定だと500 error が出てしまう
-#get ':approve/:update/:type/:order_id' => 'approve#update'
-#post 'sapprove/update' => 'approve#update'
+#get ':approve/:update/:type/:record_id' => 'approve#update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'approve#index'
+  root 'approve#error'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
