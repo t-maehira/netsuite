@@ -52,7 +52,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fiel
 h1 {
     font-weight: bold;
     font-size: 184.6%;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 header {
     width: 100%;
@@ -99,7 +99,8 @@ footer {
  **************************************/
 .numbers {
     margin-bottom: 50px;
-    font-size: 123.1%;
+    font-size: 184.6%;
+    text-align: center;
 }
 .disclaimers dt {
     margin-bottom: 5px;

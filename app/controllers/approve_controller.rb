@@ -41,13 +41,10 @@ class ApproveController < ApplicationController
     @data = make_decrypt(@encrypt_message)
 
     @orderLog = OrderLog.new
-    @orderLog.id = @data[:id]
-    @orderLog.record_type = @data[:record_type]
-    @orderLog.record_id = @data[:record_id]
     @sheetList = OrderLog::SHEET_LIST
 
     begin
-      @orderLog = OrderLog.find(@orderLog.id)
+      @orderLog = OrderLog.find(@data[:id])
       @limitDate = check_limit(@orderLog)
       if @limitDate === false
         raise '承認期限切れです'
@@ -67,15 +64,15 @@ class ApproveController < ApplicationController
   def update
     begin
       @orderLog = OrderLog.find(params[:order_log][:id])
-  
+
       @limitDate = check_limit(@orderLog)
       if @limitDate === false
         raise '承認期限切れです'
       end
-  
+
       if @orderLog.approved.nil?
         @orderLog.approved = params[:accept].present? ? OrderLog::APPROVED_ACCEPT : OrderLog::APPROVED_REJECT
-  
+
         if OrderLog.update(@orderLog.id, :approved => @orderLog.approved)
           updateNetSuiteField(@orderLog)
           render :json => @limitDate and return
