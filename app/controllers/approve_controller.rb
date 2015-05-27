@@ -23,8 +23,8 @@ class ApproveController < ApplicationController
     @limitDate = check_limit(@saved) + (60 * 60 * 9)
 
     @result = {
-      'url' => 'https://www.uluru.tokyo/approve/select/' + @hash,
-      'limit' => @limitDate.strftime('%Y-%m-%d %H:%M:%S')
+      OrderLog::NETSUITE_UPDATE_FIELDS[@saved.record_type]['url'] => 'https://www.uluru.tokyo/approve/select/' + @hash,
+      OrderLog::NETSUITE_UPDATE_FIELDS[@saved.record_type]['limit'] => @limitDate.strftime('%Y-%m-%d %H:%M:%S')
     }
 
     render :json => @result
@@ -143,7 +143,9 @@ class ApproveController < ApplicationController
     request.body = {
       'record_id' => orderLog.record_id,
       'record_type' => orderLog.record_type,
-      'approved' => OrderLog::APPROVED_TEXT[orderLog.approved]
+      'update_field' => {
+        OrderLog::NETSUITE_UPDATE_FIELDS[orderLog.record_type]['approved'] => OrderLog::APPROVED_TEXT[orderLog.approved]
+      }
     }.to_json
 
     http = Net::HTTP.new(uri.host, uri.port)
