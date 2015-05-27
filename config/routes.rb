@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get ':approve/:select/:hash' => 'approve#select'
   get ':approve/:register/:record_id/:record_type/:tranid' => 'approve#register'
   get 'approve/error' => 'approve#error'
+  get 'approve/thanks' => 'approve#thanks'
   post 'approve/update'
   patch 'approve/update' => 'approve#update'  
 # Todo ↓ の指定だと500 error が出てしまう

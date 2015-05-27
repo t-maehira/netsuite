@@ -41,7 +41,7 @@ class ApproveController < ApplicationController
     @data = make_decrypt(@encrypt_message)
 
     @orderLog = OrderLog.new
-    @sheetList = OrderLog::SHEET_LIST
+    @recordList = OrderLog::RECORD_LIST
 
     begin
       @orderLog = OrderLog.find(@data[:id])
@@ -63,29 +63,37 @@ class ApproveController < ApplicationController
   #
   def update
     begin
-      @orderLog = OrderLog.find(params[:order_log][:id])
+      OrderLog.transaction do
+        @orderLog = OrderLog.find(params[:order_log][:id])
 
-      @limitDate = check_limit(@orderLog)
-      if @limitDate === false
-        raise '承認期限切れです'
-      end
-
-      if @orderLog.approved.nil?
-        @orderLog.approved = params[:accept].present? ? OrderLog::APPROVED_ACCEPT : OrderLog::APPROVED_REJECT
-
-        if OrderLog.update(@orderLog.id, :approved => @orderLog.approved)
-          updateNetSuiteField(@orderLog)
-          render :json => @limitDate and return
-        else
-          raise '保存に失敗しました。再度お試しください。'
+        @limitDate = check_limit(@orderLog)
+        if @limitDate === false
+          raise '承認期限切れです'
         end
-      else
-        raise '既に更新されています。'
+
+        if @orderLog.approved.nil?
+          @orderLog.approved = params[:accept].present? ? OrderLog::APPROVED_ACCEPT : OrderLog::APPROVED_REJECT
+
+          if OrderLog.update(@orderLog.id, :approved => @orderLog.approved)
+            updateNetSuiteField(@orderLog)
+          else
+            raise '保存に失敗しました。再度お試しください。'
+          end
+        else
+          raise '既に更新されています。'
+        end
       end
+      redirect_to controller: 'approve', action: 'thanks'
     rescue => e
       flash[:error] = e.message
       redirect_to controller: 'approve', action: 'error'
     end
+  end
+
+  #
+  # Thanks page from update.
+  #
+  def thanks
   end
 
   private
@@ -119,13 +127,11 @@ class ApproveController < ApplicationController
   end
 
   def updateNetSuiteField(orderLog)
-    @scriptdeployment = "https://rest.netsuite.com/app/site/hosting/restlet.nl?script=14&deploy=1"
-    @account = "91";
-    @email = "netsuite_api@uluru.jp";
-    @password = "Urulu12345";
-    @role = "15";
-
-    uri = URI.parse(@scriptdeployment)
+    @account = "3701294"
+    @email = "netsuite_api@uluru.jp"
+    @password = "Urulu12345"
+    @role = "3"
+    uri = URI.parse("https://rest.netsuite.com/app/site/hosting/restlet.nl?script=14&deploy=1")
 
     response = nil
 
@@ -133,10 +139,11 @@ class ApproveController < ApplicationController
       'Authorization' => "NLAuth nlauth_account=#{@account}, nlauth_email=#{@email}, nlauth_signature=#{@password}, nlauth_role=#{@role}",
       'Content-Type' =>'application/json'
     })
+
     request.body = {
       'record_id' => orderLog.record_id,
       'record_type' => orderLog.record_type,
-      'approved' => '承諾'
+      'approved' => OrderLog::APPROVED_TEXT[orderLog.approved]
     }.to_json
 
     http = Net::HTTP.new(uri.host, uri.port)
@@ -145,6 +152,9 @@ class ApproveController < ApplicationController
 
     http.start do |h|
       response = h.request(request)
+      unless response.code == '200'
+        raise 'NetSuiteへの接続に失敗しました。'
+      end
     end
   end
 end

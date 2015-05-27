@@ -7,7 +7,10 @@ class OrderLog < ActiveRecord::Base
   APPROVED_REJECT = 'reject'
   APPROVE_LIMIT = 10
 
-  SHEET_LIST = {
+  #
+  # selectページのrecord_typeの文言
+  #
+  RECORD_LIST = {
     'SALESORDER' => {
       'title' => '注文書',
       'text' => '注文書'
@@ -17,4 +20,13 @@ class OrderLog < ActiveRecord::Base
       'text' => '納品書'
     }
   }
+
+  #
+  # NetSuite側の承諾ステータス
+  #
+  APPROVED_TEXT = {
+    APPROVED_ACCEPT => 1, # 承諾
+    APPROVED_REJECT => 2  # 拒否
+  }
+
 end

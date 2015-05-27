@@ -34,7 +34,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fiel
 #contents_wrapper {
     width: 80%;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 30px;
     min-width: 498px;
     max-width: 978px;
 }
