@@ -1,10 +1,10 @@
 <%= form_for(@orderLog, :url => {:controller => :approve, :action => :update}) do |f| %>
-  <%= content_tag(:h1, @recordList[@orderLog.record_type]['title'] + ' 承諾画面') %>
-  <%= content_tag(:p, @recordList[@orderLog.record_type]['text'] + '番号 : ' + @orderLog.tranid, :class => 'numbers') %>
+  <%= content_tag(:h1, @recordList[@orderLog.record_type]['title'] + '画面') %>
+  <%= content_tag(:p, @recordList[@orderLog.record_type]['tranid_title'] + '番号 : ' + @orderLog.tranid, :class => 'numbers') %>
   <%= hidden_field :order_log, :id, :value => @orderLog.id%>
   <div id="button_wrapper">
-    <%= f.submit "承諾", :name => 'accept' %>
-    <%= f.submit "拒否", :name => 'reject' %>
+    <%= f.submit @recordList[@orderLog.record_type]['button_accept'], :name => 'accept' %>
+    <%= f.submit @recordList[@orderLog.record_type]['button_reject'], :name => 'reject' %>
   </div>
 <% end %>
 

@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Netsuite</title>
-  <meta name="viewport" content="width=device-width">
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div id="contents_wrapper">
-    <%= render :partial=>'shared/header' %>
+  <head>
+    <title>uluru - Netsuite</title>
+    <meta name="viewport" content="width=device-width">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="contents_wrapper">
+      <%= render :partial=>'shared/header' %>
 
-    <div id="contents_body">
-      <%= yield %>
+      <div id="contents_body">
+        <%= yield %>
+      </div>
+
+      <%= render :partial=>'shared/footer' %>
     </div>
-
-    <%= render :partial=>'shared/footer' %>
-  </div>
-</body>
+  </body>
 </html>

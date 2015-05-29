@@ -19,12 +19,16 @@ class OrderLog < ActiveRecord::Base
   #
   RECORD_LIST = {
     TYPE_SALESORDER => {
-      'title' => '注文書',
-      'text' => '注文書'
+      'title' => '注文書承諾',
+      'tranid_title' => '注文書',
+      'button_accept' => '承諾',
+      'button_reject' => '拒否'
     },
     TYPE_ITEMFULFILLMENT => {
-      'title' => '検収書',
-      'text' => '納品書'
+      'title' => '納品受領確認',
+      'tranid_title' => '納品書',
+      'button_accept' => '確認OK',
+      'button_reject' => '確認NG'
     }
   }
 
@@ -43,13 +47,12 @@ class OrderLog < ActiveRecord::Base
     TYPE_SALESORDER => {
       'url' => 'custbody_so_consentscreen_url',
       'limit' => 'custbody_so_consentscreen_deadline',
-      'approved' => 'custbody2'
+      'approved' => 'custbody_so_consentstatus'
     },
     TYPE_ITEMFULFILLMENT => {
       'url' => 'custbody_ai_consentscreen_url',
       'limit' => 'custbody_ai_consentscreen_deadline',
-      'approved' => 'custbody13'
+      'approved' => 'custbody_ai_consentstatus'
     }
   }
-
 end
